@@ -1,17 +1,18 @@
-import { Link, useLocation } from "react-router-dom";
-import { FaShoppingCart, FaUserAlt, FaMusic, FaSignOutAlt } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaUserAlt, FaMusic, FaSignOutAlt, FaClipboardList } from "react-icons/fa";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const hideNavbarRoutes = ["/login", "/register"];
 
   const userToken = localStorage.getItem("token");
 
-  if (hideNavbarRoutes.includes(location.pathname)) return null; 
+  if (hideNavbarRoutes.includes(location.pathname)) return null;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.href = "/login";
+    navigate("/login");
   };
 
   return (
@@ -22,6 +23,18 @@ const Navbar = () => {
           <span className="font-sans">SoundWave Shop</span>
         </Link>
         <div className="flex items-center gap-4">
+          {userToken && (
+            <Link
+              to="/order-history"
+              className={`flex items-center hover:text-gray-300 ${
+                location.pathname === "/order-history" ? "text-blue-400" : ""
+              }`}
+            >
+              <FaClipboardList className="mr-1" />
+              Orders
+            </Link>
+          )}
+          
           {userToken && (
             <Link
               to="/cart"
