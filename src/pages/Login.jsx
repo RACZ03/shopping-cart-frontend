@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { login } from "../services/authService";
+import { FaArrowLeft } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -64,6 +65,16 @@ const Login = () => {
             Sign up
           </a>
         </p>
+
+        <div className="flex items-center justify-center space-x-2 top-4 left-4">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center text-gray-600 hover:text-gray-800 transition"
+          >
+            <FaArrowLeft className="text-lg mr-1" />
+            <span className="text-sm font-semibold">Go to Home</span>
+          </button>
+        </div>
       </div>
     </div>
   );
