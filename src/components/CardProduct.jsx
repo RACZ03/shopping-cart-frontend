@@ -62,7 +62,7 @@ const CardProduct = ({ product, isInCart, cartItemId, onUpdateCart }) => {
         className="bg-white rounded-lg overflow-hidden shadow-md relative transition-transform duration-300 ease-in-out"
       >
         <div className="bg-white rounded-lg overflow-hidden shadow-md relative">
-          <img src={product.image} alt={product.name} className="w-full h-64 object-cover" />
+          <img src={product.image} alt={product.name} className="w-full h-60 object-cover" />
           <div className="p-4 border-t">
             <h2 className="text-lg font-semibold text-gray-800 mb-2">{product.name}</h2>
             <div className="flex items-center justify-between">

@@ -13,7 +13,7 @@ const Login = () => {
     try {
       await login(email, password);
       toast.success("Login successful!");
-      navigate("/"); // Redirigir al home después del login
+      navigate("/");
     } catch (error) {
       toast.error(error);
     }

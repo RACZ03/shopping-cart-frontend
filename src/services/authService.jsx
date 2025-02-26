@@ -12,6 +12,27 @@ export const login = async (email, password) => {
   }
 };
 
+export const register = async (userData) => {
+  try {
+    const response = await axios.post(`${API_URL}/users/register`, userData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data?.message || "Registration failed. Please try again.";
+  }
+};
+
+export const getProfile = async (userId, token) => {
+  try {
+    const response = await axios.get(`${API_URL}/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    throw error;
+  }
+};
+
 export const logout = () => {
   localStorage.removeItem("token");
 };
