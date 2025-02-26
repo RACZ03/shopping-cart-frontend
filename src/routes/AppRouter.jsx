@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Cart from "../pages/Cart";
 import OrderHistory from "../pages/OrderHistory";
+import Profile from "../pages/Profile";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Navbar from "../components/Navbar";
@@ -21,6 +22,7 @@ const AppRouter = () => {
         <Route element={<PrivateRoute />}>
           <Route path="/cart" element={<Cart />} />
           <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
     </Router>

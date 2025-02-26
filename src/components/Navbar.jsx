@@ -1,12 +1,13 @@
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaUserAlt, FaMusic, FaSignOutAlt, FaClipboardList } from "react-icons/fa";
+import { FaShoppingCart, FaUserAlt, FaMusic, FaSignOutAlt, FaClipboardList, FaBars, FaTimes } from "react-icons/fa";
 import { logout } from "../services/authService";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   const hideNavbarRoutes = ["/login", "/register"];
-
   const userToken = localStorage.getItem("token");
 
   if (hideNavbarRoutes.includes(location.pathname)) return null;
@@ -17,65 +18,84 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold flex items-center">
-          <FaMusic className="mr-2" />
+    <nav className="bg-gray-900 text-white py-4 shadow-lg">
+      <div className="container mx-auto flex justify-between items-center px-6">
+
+        {/* Logo */}
+        <Link to="/" className="text-2xl font-bold flex items-center gap-2 hover:text-blue-400 transition">
+          <FaMusic className="text-blue-400" />
           <span className="font-sans">SoundWave Shop</span>
         </Link>
-        <div className="flex items-center gap-4">
-          {userToken && (
-            <>
-              <Link
-                to="/order-history"
-                className={`flex items-center hover:text-gray-300 ${location.pathname === "/order-history" ? "text-blue-400" : ""
-                  }`}
-              >
-                <FaClipboardList className="mr-1" />
-                Orders
-              </Link>
-              <Link
-                to="/order-history"
-                className={`flex items-center hover:text-gray-300 ${location.pathname === "/cart" ? "text-blue-400" : ""
-                  }`}
-              >
-                <FaShoppingCart className="mr-1" />
-                Cart
-              </Link>
-            </>
 
-          )}
-
-          {!userToken ? (
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-6">
+          {userToken ? (
             <>
-              <Link
-                to="/login"
-                className={`flex items-center hover:text-gray-300 ${location.pathname === "/login" ? "text-blue-400" : ""
-                  }`}
+              <NavItem to="/order-history" icon={FaClipboardList} text="Orders" location={location} />
+              <NavItem to="/cart" icon={FaShoppingCart} text="Cart" location={location} />
+              <NavItem to="/profile" icon={FaUserAlt} text="Profile" location={location} />
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition"
               >
-                <FaUserAlt className="mr-1" />
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className={`flex items-center hover:text-gray-300 ${location.pathname === "/register" ? "text-blue-400" : ""
-                  }`}
-              >
-                <FaUserAlt className="mr-1" />
-                Register
-              </Link>
+                <FaSignOutAlt />
+                Logout
+              </button>
             </>
           ) : (
-            <button onClick={handleLogout} className="flex items-center hover:text-gray-300">
-              <FaSignOutAlt className="mr-1" />
-              Logout
-            </button>
+            <>
+              <NavItem to="/login" icon={FaUserAlt} text="Login" location={location} />
+              <NavItem to="/register" icon={FaUserAlt} text="Register" location={location} />
+            </>
           )}
-
         </div>
+
+        {/* Mobile Menu Button */}
+        <button className="md:hidden text-2xl focus:outline-none" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </button>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-gray-800 py-4">
+          <div className="flex flex-col items-center gap-4">
+            {userToken ? (
+              <>
+                <NavItem to="/order-history" icon={FaClipboardList} text="Orders" location={location} />
+                <NavItem to="/cart" icon={FaShoppingCart} text="Cart" location={location} />
+                <NavItem to="/profile" icon={FaUserAlt} text="Profile" location={location} />
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 bg-red-600 rounded-lg hover:bg-red-700 transition"
+                >
+                  <FaSignOutAlt />
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <NavItem to="/login" icon={FaUserAlt} text="Login" location={location} />
+                <NavItem to="/register" icon={FaUserAlt} text="Register" location={location} />
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
+
+// Component to render navigation links dynamically
+const NavItem = ({ to, icon: Icon, text, location }) => (
+  <Link
+    to={to}
+    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition ${location.pathname === to ? "text-blue-400" : "hover:text-blue-400"
+      }`}
+  >
+    <Icon />
+    {text}
+  </Link>
+);
 
 export default Navbar;

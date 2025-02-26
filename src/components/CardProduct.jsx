@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsCartPlus, BsTrash } from "react-icons/bs";
+import { FaShoppingCart } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { addToCartService, removeFromCartService } from "../services/cartService";
 import { toast } from "react-toastify";
@@ -67,15 +68,28 @@ const CardProduct = ({ product, isInCart, cartItemId, onUpdateCart }) => {
             <h2 className="text-lg font-semibold text-gray-800 mb-2">{product.name}</h2>
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
-              {isInCart ? (
-                <button className="text-2xl text-red-600 hover:text-red-800" onClick={openRemoveModal}>
-                  <BsTrash />
-                </button>
-              ) : (
-                <button className="text-2xl text-gray-600 hover:text-gray-800" onClick={openModal}>
-                  <BsCartPlus />
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {isInCart ? (
+                  <>
+                    <FaShoppingCart
+                      className="text-xl text-blue-500 hover:text-blue-700 mr-2 cursor-pointer transition-transform transform hover:scale-110"
+                      onClick={() => navigate("/cart")}
+                      title="View Cart"
+                    />
+                    <BsTrash
+                      className="text-xl text-red-600 hover:text-red-800 cursor-pointer transition-transform transform hover:scale-110"
+                      onClick={openRemoveModal}
+                      title="Remove from Cart"
+                    />
+                  </>
+                ) : (
+                  <BsCartPlus
+                    className="text-2xl text-gray-600 hover:text-gray-800 cursor-pointer transition-transform transform hover:scale-110"
+                    onClick={openModal}
+                    title="Add to Cart"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

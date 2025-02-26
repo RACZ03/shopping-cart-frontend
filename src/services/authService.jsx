@@ -21,15 +21,27 @@ export const register = async (userData) => {
   }
 };
 
-export const getProfile = async (userId, token) => {
+export const getProfile = async (token) => {
   try {
-    const response = await axios.get(`${API_URL}/users/${userId}`, {
+    const response = await axios.get(`${API_URL}/users/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    throw error;
+  }
+};
+
+export const updateProfile = async (userId, updatedData, token) => {
+  try {
+    const response = await axios.put(`${API_URL}/users/${userId}`, updatedData, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching profile:", error);
-    throw error;
+    console.error("Error updating profile:", error);
+    throw error.response?.data?.message || "Failed to update profile. Please try again.";
   }
 };
 
